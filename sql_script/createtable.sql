@@ -1,4 +1,3 @@
-use cs122b;
 create table movies(
 id varchar(10) not null,
 title varchar(100) not null,
@@ -38,6 +37,24 @@ foreign key (genreId) references genres(id),
 foreign key (movieId) references movies(id)
 );
 
+
+
+
+create table creditcards( 
+id varchar(20) not null,
+firstName varchar(50) not null,
+lastName varchar(50) not null,
+expiration date not null,
+primary key(id)
+); 
+
+create table ratings(
+movieId varchar(10) not null,
+rating float not null,
+numVotes int not null,
+foreign key(movieId) references movies(id) 
+);
+
 create table customers(
 id int not null auto_increment,
 firstName varchar(50) not null,
@@ -59,22 +76,4 @@ foreign key(customerId) references customers(id),
 foreign key(movieId) references movies(id),
 primary key(id)
 );
-
-
-create table creditcards( 
-id varchar(20) not null,
-firstName varchar(50) not null,
-lastName varchar(50) not null,
-expiration date not null,
-primary key(id)
-); 
-
-create table ratings(
-movieId varchar(10) not null,
-rating float not null,
-numVotes int not null,
-foreign key(movieId) references movies(id) 
-);
-
-
 
