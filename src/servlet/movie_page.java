@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class TomcatTest extends HttpServlet {
+public class movie_page extends HttpServlet {
     /**
 	 * 
 	 */
@@ -121,7 +121,7 @@ public class TomcatTest extends HttpServlet {
       
             Statement statement = dbcon.createStatement();
             
-            String query = "Select * from movies,ratings  where movies.id = ratings.movieId order by rating desc limit 20;";
+            String query = "Select * from movies,ratings  where movies.title = '"+id+"' and movies.id = ratings.movieId ;";
             
             // Perform the query
             ResultSet rs = statement.executeQuery(query);

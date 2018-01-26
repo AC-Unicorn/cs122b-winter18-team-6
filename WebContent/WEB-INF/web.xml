@@ -10,11 +10,67 @@
        <servlet-class>servlet.TomcatTest</servlet-class>
    </servlet>
  
+   <servlet>
+       <servlet-name>loginServlet</servlet-name>
+       <servlet-class>servlet.login</servlet-class>	
+   </servlet>
+   
    <servlet-mapping>
        <servlet-name>movieServlet</servlet-name>
        <url-pattern>/hello</url-pattern>
    </servlet-mapping>
-  
+    
+   <servlet-mapping>
+       <servlet-name>loginServlet</servlet-name>
+       <url-pattern>/form</url-pattern>
+   </servlet-mapping> 
+   <servlet>
+    <servlet-name>loginerror</servlet-name>
+    <jsp-file>/error.html</jsp-file>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>loginerror</servlet-name>
+    <url-pattern>/loginerror</url-pattern>
+   </servlet-mapping>
+   
+   <servlet>
+       <servlet-name>Main</servlet-name>
+       <jsp-file>/index.html</jsp-file> 
+   </servlet>
+   
+   <servlet-mapping>
+    <servlet-name>Main</servlet-name>
+    <url-pattern>/Main</url-pattern>
+   </servlet-mapping>
+   
+   <servlet>
+       <servlet-name>Search</servlet-name>
+       <servlet-class>servlet.search</servlet-class> 
+   </servlet>
+   
+   <servlet-mapping>
+    <servlet-name>Search</servlet-name>
+    <url-pattern>/Search</url-pattern>
+   </servlet-mapping>
+   
+   
+   <servlet>
+       <servlet-name>SingleMovie</servlet-name>
+       <servlet-class>servlet.movie_page</servlet-class> 
+   </servlet>
+    <servlet-mapping>
+    <servlet-name>SingleMovie</servlet-name>
+    <url-pattern>/SingleMovie</url-pattern>
+   </servlet-mapping>   
+   
+   
+   
+   
+   
+   
+   
+   
+    
   
   
   
@@ -23,7 +79,7 @@
   
   
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
+    <welcome-file>login.jsp</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>default.html</welcome-file>

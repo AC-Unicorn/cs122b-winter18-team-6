@@ -1,10 +1,148 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Home</title>
-</head>
-<body>
-     <h1>爱真的需要勇气来面对流言蜚语。 </h1>
-</body>
+
+    <head>
+
+        <meta charset="UTF-8">
+
+        <title>Fablix</title>
+        <style>       
+            body{
+                margin: 0;
+                padding: 0;
+                
+            }
+            h1{
+            font-family: Brush Script MT, Brush Script Std, cursive;
+            color: white;
+            margin: 0;
+            }   
+            
+            #nav{
+                margin-top: 0;
+                padding: 0;
+                height: 0px;
+            }
+            
+            #search{
+                float: center;
+                width: 100%;
+                height: 500px;
+                background: url("http://bestarts.org/ba/wp-content/uploads/2015/02/post-impressionist-paintings.jpg");
+                background-size: cover;
+                background-position: center center;
+            }
+            
+            #search input{
+                width: 30%;
+                height: 30px;
+                margin-left: 30%;
+                margin-top: 10%;
+                border-radius: 19%;
+                font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+                font-size: 1.2rem;
+            }
+            
+            #search button{
+                height: 30px;
+                background-color:cornflowerblue;
+                border: none;
+                color: ivory;
+                border-radius: 15%;
+            }
+            
+            
+            #left{
+                
+                float: left;
+                font-family: Brush Script MT, Brush Script Std, cursive;
+                color: rgb(220,163,18);
+                font-size: 2rem;
+                text-decoration: none;
+            }
+            
+            #left:hover{
+                font-size: 2.9rem;
+                color: blue;
+            }
+            
+            #right{
+                
+                font-family: Brush Script MT, Brush Script Std, cursive;
+                color: rgb(25,77,104);
+                float: right;
+                font-size: 2rem;
+                text-decoration: none;
+                
+            }
+            
+            #right:hover{
+                font-size: 2.9rem;
+                color:blue;
+            }
+            
+            #Browse{
+                width: 100%;
+                height: 200px;
+                
+                
+               
+            }
+            foot p{
+                font-family:Brush Script MT, Brush Script Std, cursive;;
+                float:right;
+                color: black;
+                font-size: 1.4em;  
+            }
+            
+            
+        </style>
+
+    </head>
+
+    
+    
+    
+    
+    
+
+    <body>
+        <div id="nav">
+        
+        <h1>Mizushima's Open Art Gallery</h1>
+        </div>
+        <div id="search">
+            <form action="./Search">
+                <input type="text" name="Search" value="Movies,stars,genres....." >
+                <button type="submit">search</button>
+            </form> 
+        </div>
+        
+        <div id="Browse">
+            <a id="left"  onclick="test(this.id)"> Browse By Genres</a>
+         
+            <a id="right"  onclick="test(this.id)"> Browse By Movies</a> 
+            
+            
+            
+        </div>
+    
+	  <script>
+	  	    function test(id)
+	  	    {
+	  	    	
+	  	    	var url = "./SingleMovie?name="+id;
+	  	    	window.location.href = url;
+	  	    }
+	  		
+	  
+	  </script>
+	
+    </body>
+    <foot>
+      <p>All rights reserved by 42</p>
+    </foot>
+
+
+
 </html>

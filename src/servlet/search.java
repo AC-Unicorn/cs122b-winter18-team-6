@@ -9,16 +9,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class TomcatTest extends HttpServlet {
+public class search extends HttpServlet {
     /**
 	 * 
 	 */
@@ -41,12 +38,6 @@ public class TomcatTest extends HttpServlet {
         String loginUrl = "jdbc:mysql://localhost:3306/cs122b";
 
         response.setContentType("text/html"); // Response mime type
-        
-        
-        String id = request.getParameter("name");
-        
-        System.out.println(id);
-        
         
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
@@ -108,7 +99,7 @@ public class TomcatTest extends HttpServlet {
         
         
         out.println("</style>");
-        out.println("<BODY><div id='nav'> <ul><li><a href='./Main'>Home</a></li> <li>Movie</li> <li>Purchase</li></ul>    </div>");
+        out.println("<BODY><div id='nav'> <ul><li>Home</li> <li>Movie</li> <li>Purchase</li></ul>    </div>");
         out.println("<div id='banner'><img id='top20'src='https://www.pcc.edu/about/awards/images/top-20.png' alt='Top 20' width = 150px; >  </div>");
         out.println("<div class=wrapper>");
         try {
@@ -121,8 +112,10 @@ public class TomcatTest extends HttpServlet {
       
             Statement statement = dbcon.createStatement();
             
-            String query = "Select * from movies,ratings  where movies.id = ratings.movieId order by rating desc limit 20;";
             
+            String input = request.getParameter("Search");
+            String query = "Select distinct(movies.id),title,year,director from movies,stars,stars_in_movies  where movies.id = movieId and starId = stars.id and  (title like'%" +input+"%' or stars.name like '%"+input+"%' or movies.year like '%"+input+"%');";
+            System.out.println(query);
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
                
@@ -137,7 +130,7 @@ public class TomcatTest extends HttpServlet {
                 String m_title = rs.getString(2);
                 String m_year = rs.getString(3);
                 String m_director = rs.getString(4);
-                String m_rating = rs.getString(6);
+                
                
                 
                 String query2 = "select * from movies,genres_in_movies,genres where movies.id='"+rs.getString(1) +"' and movies.id = movieId and genreId = genres.id;";
@@ -165,9 +158,23 @@ public class TomcatTest extends HttpServlet {
                 
                 
                 out.println("<div class='movie_box'>");
-                out.println( "<ul> <li><span class='title_text'>Title: " + m_title + "</span></li>" + "<li>Year: " + m_year + "</li>" + "<li>Director: " + m_director + "</li>" + "<li>Rate: "
-                        +m_rating+"</li>"+"<li>genre: "+m_genres+"</li>"+"<li>Actors: " +m_stars+ "</li>" +"</ul>");
+                out.println( "<ul> <li><span class='title_text'><a id='"+m_title+"' onclick='test(this.id)'> " + m_title + "</a></span></li>" + "<li>Year: " + m_year + "</li>" + "<li>Director: " + m_director + "</li>"
+                        +"<li>genre: "+m_genres+"</li>"+"<li>Actors: " +m_stars+ "</li>" +"</ul>");
                 out.println("</div>");
+                out.println("<script>\r\n" + 
+                		"	   function test(id){\r\n" + 
+                		"		   \r\n" + 
+                		"		   \r\n" + 
+                		"		   var url = \"./SingleMovie?name=\"+id;\r\n" + 
+                		"		   \r\n" + 
+                		"		   window.location.href = url;\r\n" + 
+                		"		  \r\n" + 
+                		"	   }	\r\n" + 
+                		"	\r\n" + 
+                		"	\r\n" + 
+                		"	</script>");
+                
+                
             }
 
             
