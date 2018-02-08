@@ -32,12 +32,18 @@
                 background-size: cover;
                 background-position: center center;
             }
-            
+            #search h3{
+                
+                margin-top: 0;
+                margin-left: 40%;
+                color: yellow;
+            }
+           
             #search input{
                 width: 30%;
                 height: 30px;
                 margin-left: 30%;
-                margin-top: 10%;
+                
                 border-radius: 19%;
                 font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
                 font-size: 1.2rem;
@@ -113,9 +119,16 @@
         <a href='./buy'>Purchase</a>
         </div>
         <div id="search">
-            <form action="./Search">
-                <input id="search_b" type="text" name="Search" value="Movies,stars,genres....." onclick="this.value=''" >
-                <button type="submit">search</button>
+            <form id="search_block" action="./Search">
+                <h3>Movie Name</h3>
+                <input id="search_b" type="text" name="Search" value="" onclick="this.value=''" >
+                <h3>Movie Year</h3>
+                <input id="search_c" type="text" name="Year" value="" onclick="this.value=''" >
+                <h3>Movie director</h3>
+                <input id="search_d" type="text" name="director" value="" onclick="this.value=''" >
+                <h3>Movie star</h3>
+                <input id="search_e" type="text" name="star" value="" onclick="this.value=''" >
+                <button type="submit" value="search">search</button>
             </form> 
         </div>
         

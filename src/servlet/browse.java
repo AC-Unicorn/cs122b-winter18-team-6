@@ -122,20 +122,20 @@ public class browse extends HttpServlet {
             
             if(id.equals("right"))
             {
-            	out.println("<div class='movie_box'>");
+            	out.println("<ul>");
             	for(int i=0;i<10;i++)
-            	{
-            		out.println( "<ul> <li><span class='title_text'><a href='./Search?Search="+i+"'>Title start with: " + i + "</a></span></li>" );
+            	{	
+            		out.println( " <li><span class='title_text'><a href='./btr?Search="+i+"'>Title start with: " + i + "</a></span></li>" );
             	}
-            	out.println("</ul>");
+            	out.println("</ul><ul> ");
             	char c = 'a';
             	for(int i=0;i<26;i++)
             	{
             		char ci = (char) (c+i);
-            		out.println( "<ul> <li><span class='title_text'><a href='./Search?Search="+ci+"'>Title start with: " + ci + "</a></span></li>" );
+            		out.println( "<li><span class='title_text'><a href='./btr?Search="+ci+"'>Title start with: " + ci + "</a></span></li>" );
             	}
             	out.println("</ul>");
-            	 out.println("</div>");
+            	 
             }
             else {
                 Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
