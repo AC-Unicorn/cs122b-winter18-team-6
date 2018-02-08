@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class TomcatTest extends HttpServlet {
+public class movie_page extends HttpServlet {
     /**
 	 * 
 	 */
@@ -104,11 +104,11 @@ public class TomcatTest extends HttpServlet {
         		".wrapper{\r\n" + 
         		"	width:80%;\r\n" + 
         		"	margin: 0 10%;\r\n" + 
-        		"}");
+        		"} ");
         
         
         out.println("</style>");
-        out.println("<BODY><div id='nav'> <ul><li><a href='./Main'>Home</a></li> <li>Movie</li> <li>Purchase</li></ul>    </div>");
+        out.println("<BODY><div id='nav'> <ul><li><a href='./Main'>Home</a></li> <li>Movie</li> <li><a href='./buy'>Purchase</a></li></ul>    </div>");
         out.println("<div id='banner'><img id='top20'src='https://www.pcc.edu/about/awards/images/top-20.png' alt='Top 20' width = 150px; >  </div>");
         out.println("<div class=wrapper>");
         try {
@@ -121,7 +121,7 @@ public class TomcatTest extends HttpServlet {
       
             Statement statement = dbcon.createStatement();
             
-            String query = "Select * from movies,ratings  where movies.id = ratings.movieId order by rating desc limit 20;";
+            String query = "Select * from movies,ratings  where movies.title = '"+id+"' and movies.id = ratings.movieId  ;";
             
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
@@ -156,7 +156,7 @@ public class TomcatTest extends HttpServlet {
                 String m_stars = "";
                 Statement statement3 = dbcon.createStatement();
                 ResultSet rs3 = statement3.executeQuery(query3);
-                while(rs3.next()) m_stars += rs3.getString(8) + ",";
+                while(rs3.next()) m_stars += "<a id ='"+rs3.getString(8)+"' onclick = foo(this.id)>"+rs3.getString(8) + "</a>,";
                 
                 rs3.close();
                 statement3.close();
@@ -166,13 +166,27 @@ public class TomcatTest extends HttpServlet {
                 
                 out.println("<div class='movie_box'>");
                 out.println( "<ul> <li><span class='title_text'>Title: " + m_title + "</span></li>" + "<li>Year: " + m_year + "</li>" + "<li>Director: " + m_director + "</li>" + "<li>Rate: "
-                        +m_rating+"</li>"+"<li>genre: "+m_genres+"</li>"+"<li>Actors: " +m_stars+ "</li>" +"</ul>");
+                        +m_rating+"</li>"+"<li>genre: "+m_genres+"</li>"+"<li>Actors: " +m_stars+ "</li>" +"<a href='./checkout?name="+m_title+"'><img src='https://d30y9cdsu7xlg0.cloudfront.net/png/28468-200.png' width='40px' heigth='40px'></a>"+"</ul>");
                 out.println("</div>");
             }
 
             
              
             out.println("</div>");
+            
+            out.println("</div>");
+            out.println("<script>\r\n" + 
+            		"	   function foo(id){\r\n" + 
+            		"		   \r\n" + 
+            		"		   \r\n" + 
+            		"		   var url = \"./SingleStar?name=\"+id;\r\n" + 
+            		"		   \r\n" + 
+            		"		   window.location.href = url;\r\n" + 
+            		"		  \r\n" + 
+            		"	   }	\r\n" + 
+            		"	\r\n" + 
+            		"	\r\n" + 
+            		"	</script>");
          
             
             
