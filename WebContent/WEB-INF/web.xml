@@ -64,14 +64,108 @@
    </servlet-mapping>   
    
    
+   <servlet>
+       <servlet-name>Browse</servlet-name>
+       <servlet-class>servlet.browse</servlet-class> 
+   </servlet>
+    <servlet-mapping>
+    <servlet-name>Browse</servlet-name>
+    <url-pattern>/browse</url-pattern>
+   </servlet-mapping>  
    
    
-   
-   
-   
+  
+   <servlet>
+       <servlet-name>SingleStar</servlet-name>
+       <servlet-class>servlet.star_page</servlet-class> 
+   </servlet>
+    <servlet-mapping>
+    <servlet-name>SingleStar</servlet-name>
+    <url-pattern>/SingleStar</url-pattern>
+   </servlet-mapping>   
    
     
+  <servlet>
+       <servlet-name>browse_genre</servlet-name>
+       <servlet-class>servlet.browse_reuslt</servlet-class> 
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>browse_genre</servlet-name>
+    <url-pattern>/browse_genre</url-pattern>
+  </servlet-mapping>   
   
+  <servlet>
+       <servlet-name>add_to_cart</servlet-name>
+       <servlet-class>servlet.add_to_cart</servlet-class> 
+   </servlet>
+  <servlet-mapping>
+    <servlet-name>add_to_cart</servlet-name>
+    <url-pattern>/checkout</url-pattern>
+  </servlet-mapping>    
+  
+ <servlet>
+       <servlet-name>Deal_cart</servlet-name>
+       <servlet-class>servlet.Deal_cart</servlet-class> 
+   </servlet>
+ <servlet-mapping>
+    <servlet-name>Deal_cart</servlet-name>
+    <url-pattern>/Deal_cart</url-pattern>
+  </servlet-mapping>  
+  
+  
+  
+  
+  
+  
+  <servlet>
+       <servlet-name>check_out</servlet-name>
+       <jsp-file>/shopping_cart.jsp</jsp-file>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>check_out</servlet-name>
+    <url-pattern>/buy</url-pattern>
+</servlet-mapping>    
+
+
+<servlet>
+       <servlet-name>check_out_continue</servlet-name>
+       <jsp-file>/check_out.html</jsp-file>
+</servlet>
+<servlet-mapping>
+    <servlet-name>check_out_continue</servlet-name>
+    <url-pattern>/check_out</url-pattern>
+</servlet-mapping>  
+
+
+  
+  <servlet>
+       <servlet-name>check_out_auth</servlet-name>
+       <servlet-class>servlet.checkout_auth</servlet-class> 
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>check_out_auth</servlet-name>
+    <url-pattern>/checkout_auth</url-pattern>
+  </servlet-mapping>    
+  
+  
+  <servlet>
+       <servlet-name>auth_success</servlet-name>
+       <jsp-file>/auth_success.html</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>auth_success</servlet-name>
+    <url-pattern>/auth_success</url-pattern>
+  </servlet-mapping>    
+  
+  
+  <servlet>
+       <servlet-name>auth_error</servlet-name>
+       <jsp-file>/check_error.html</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>auth_error</servlet-name>
+    <url-pattern>/auth_error</url-pattern>
+  </servlet-mapping>    
   
   
   

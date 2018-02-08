@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class movie_page extends HttpServlet {
+public class browse extends HttpServlet {
     /**
 	 * 
 	 */
@@ -45,7 +45,7 @@ public class movie_page extends HttpServlet {
         
         String id = request.getParameter("name");
         
-        System.out.println(id);
+        
         
         
         // Output stream to STDOUT
@@ -104,97 +104,73 @@ public class movie_page extends HttpServlet {
         		".wrapper{\r\n" + 
         		"	width:80%;\r\n" + 
         		"	margin: 0 10%;\r\n" + 
-        		"} ");
+        		"}");
         
         
         out.println("</style>");
-        out.println("<BODY><div id='nav'> <ul><li><a href='./Main'>Home</a></li> <li>Movie</li> <li><a href='./buy'>Purchase</a></li></ul>    </div>");
+        out.println("<BODY><div id='nav'> <ul><li><a href='./Main'>Home</a></li> <li>Movie</li> <li>Purchase</li></ul>    </div>");
         out.println("<div id='banner'><img id='top20'src='https://www.pcc.edu/about/awards/images/top-20.png' alt='Top 20' width = 150px; >  </div>");
         out.println("<div class=wrapper>");
         try {
             //Class.forName("org.gjt.mm.mysql.Driver");
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             
-            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
-            
-            // Declare our statement
-      
-            Statement statement = dbcon.createStatement();
-            
-            String query = "Select * from movies,ratings  where movies.title = '"+id+"' and movies.id = ratings.movieId  ;";
-            
-            // Perform the query
-            ResultSet rs = statement.executeQuery(query);
-               
-            
-          
-            
 
-            // Iterate through each row of rs
-            while (rs.next()) {
-                
-                
-                String m_title = rs.getString(2);
-                String m_year = rs.getString(3);
-                String m_director = rs.getString(4);
-                String m_rating = rs.getString(6);
-               
-                
-                String query2 = "select * from movies,genres_in_movies,genres where movies.id='"+rs.getString(1) +"' and movies.id = movieId and genreId = genres.id;";
-                
-                Statement statement2 = dbcon.createStatement();
-                ResultSet rs2 = statement2.executeQuery(query2);
-                String m_genres = "";
-                while(rs2.next())m_genres += rs2.getString(8)+",";
-                
-                rs2.close();
-                statement2.close();
-                
-                
-                String query3 = "select * from movies,stars_in_movies,stars where movies.id='"+rs.getString(1) +"' and movies.id = movieId and starId = stars.id;";
-                
-                String m_stars = "";
-                Statement statement3 = dbcon.createStatement();
-                ResultSet rs3 = statement3.executeQuery(query3);
-                while(rs3.next()) m_stars += "<a id ='"+rs3.getString(8)+"' onclick = foo(this.id)>"+rs3.getString(8) + "</a>,";
-                
-                rs3.close();
-                statement3.close();
-                
-                
-                
-                
-                out.println("<div class='movie_box'>");
-                out.println( "<ul> <li><span class='title_text'>Title: " + m_title + "</span></li>" + "<li>Year: " + m_year + "</li>" + "<li>Director: " + m_director + "</li>" + "<li>Rate: "
-                        +m_rating+"</li>"+"<li>genre: "+m_genres+"</li>"+"<li>Actors: " +m_stars+ "</li>" +"<a href='./checkout?name="+m_title+"'><img src='https://d30y9cdsu7xlg0.cloudfront.net/png/28468-200.png' width='40px' heigth='40px'></a>"+"</ul>");
-                out.println("</div>");
+            
+            
+            String query = "select * from genres;";
+            
+            if(id.equals("right"))
+            {
+            	out.println("<div class='movie_box'>");
+            	for(int i=0;i<10;i++)
+            	{
+            		out.println( "<ul> <li><span class='title_text'><a href='./Search?Search="+i+"'>Title start with: " + i + "</a></span></li>" );
+            	}
+            	out.println("</ul>");
+            	char c = 'a';
+            	for(int i=0;i<26;i++)
+            	{
+            		char ci = (char) (c+i);
+            		out.println( "<ul> <li><span class='title_text'><a href='./Search?Search="+ci+"'>Title start with: " + ci + "</a></span></li>" );
+            	}
+            	out.println("</ul>");
+            	 out.println("</div>");
             }
+            else {
+                Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+                
+                // Declare our statement
+          
+                Statement statement = dbcon.createStatement();
+            	ResultSet rs = statement.executeQuery(query);
+                while (rs.next()) {
+                    
+                    
+                    String m_title = rs.getString(2);                    
+                    out.println("<div class='movie_box'>");
+                    out.println( "<ul> <li><span class='title_text'><a href='./browse_genre?Search="+m_title+"'>Title: " + m_title + "</a></span></li>" );
+                    out.println("</ul>");
+                    out.println("</div>");
+                    
+                }
+                rs.close();
+                
+                statement.close();
+                
+                dbcon.close();
+            }
+            
+           
+
 
             
              
-            out.println("</div>");
-            
-            out.println("</div>");
-            out.println("<script>\r\n" + 
-            		"	   function foo(id){\r\n" + 
-            		"		   \r\n" + 
-            		"		   \r\n" + 
-            		"		   var url = \"./SingleStar?name=\"+id;\r\n" + 
-            		"		   \r\n" + 
-            		"		   window.location.href = url;\r\n" + 
-            		"		  \r\n" + 
-            		"	   }	\r\n" + 
-            		"	\r\n" + 
-            		"	\r\n" + 
-            		"	</script>");
+           
          
             
             
-            rs.close();
-            
-            statement.close();
-            
-            dbcon.close();
+
             
             
         } catch (SQLException ex) {

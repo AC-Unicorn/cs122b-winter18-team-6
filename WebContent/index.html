@@ -110,10 +110,11 @@
         <div id="nav">
         
         <h1>Mizushima's Open Art Gallery</h1>
+        <a href='./buy'>Purchase</a>
         </div>
         <div id="search">
             <form action="./Search">
-                <input type="text" name="Search" value="Movies,stars,genres....." >
+                <input id="search_b" type="text" name="Search" value="Movies,stars,genres....." onclick="this.value=''" >
                 <button type="submit">search</button>
             </form> 
         </div>
@@ -131,10 +132,11 @@
 	  	    function test(id)
 	  	    {
 	  	    	
-	  	    	var url = "./SingleMovie?name="+id;
+	  	    	var url = "./browse?name="+id;
 	  	    	window.location.href = url;
 	  	    }
-	  		
+	  	    
+	  	  
 	  
 	  </script>
 	

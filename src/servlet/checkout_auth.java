@@ -15,8 +15,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.ArrayList;
+import java.util.Date;
 
-public class login extends HttpServlet {
+public class checkout_auth extends HttpServlet {
     /**
 	 * 
 	 */
@@ -55,60 +60,86 @@ public class login extends HttpServlet {
             // Declare our statement
       
             Statement statement = dbcon.createStatement();
-            
             HttpSession session = request.getSession();
             
-            if(session.getAttribute("login")==null)
-            {
-            	
-            	
-            	session.setAttribute("login", 0);
-            	
-            }//First time access website create login attribute
-//            else if(  (int)session.getAttribute("login")==1) {
-//            	
-//            	
-//            	
-//            	response.sendRedirect("./Main");
-//            }
-//            
+            
             
             
                
             
-            out.println("<h1>Log in success</h1>");
+            
             
 
             // Iterate through each row of rs
            
-            String uname = request.getParameter("Username");
-            String upasscode = request.getParameter("Password");
+            String lastName = request.getParameter("lastName");
+            String firstName = request.getParameter("firstName");
+            String cardNumber = request.getParameter("creditCard");
+            String eDate = request.getParameter("expireDate");
             
-            String query = "select password,id from customers  where customers.email = '"+uname+"';";
+            
+            String query = "select * from creditcards where id = '"+cardNumber+"';";
             ResultSet rs = statement.executeQuery(query);
             boolean flag = false;
-            int ccid = 0;
             while(rs.next()) {
             	
-            	if(upasscode.equals(rs.getString(1))){
+            	if(firstName.equals(rs.getString(2)) && lastName.equals(rs.getString(3)) && eDate.equals(rs.getString(4)))
             		flag = true;
-            		ccid = rs.getInt(2);
+            	
+            }
+            
+            
+            if(flag==true)
+            {	
+            	if(session.getAttribute("cart")==null)
+            		response.sendRedirect("./auth_error");
+            	else {
+            		
+            		HashMap<String,Integer> am = (HashMap<String, Integer>) session.getAttribute("cart");
+            		System.out.println(am.toString());            		
+            		am.remove(null);
+            		for (String str : am.keySet()) {  
+            		      System.out.println("key is :"+ str);
+            		      
+            		      if(!str.equalsIgnoreCase("null")) {
+            		      String m_id = "select id from movies where title='"+str+"';";
+            		      Statement s1 = dbcon.createStatement();
+            		      ResultSet rs1 = s1.executeQuery(m_id);
+            		      String id = "";
+            		      while(rs1.next()) id = rs1.getString(1);
+            		      rs1.close();
+            		      s1.close();
+            		      
+            		      Date now = new Date();
+            		      int ccId = (int) session.getAttribute("user_id");
+            		      System.out.println(id);
+            		      if(id!=null&&id!="") {
+            		      String update = "INSERT INTO sales VALUES(0,"+ccId+",'"+id+"', '2005/01/12');";
+            		      Statement s2 = dbcon.createStatement();
+            		      int n = s2.executeUpdate(update);
+            		      
+            		      System.out.println(n+"rows has been changed");
+            		      s2.close();
+            		      }
+            		      }
+            		}  
+            		
+            		am = new HashMap<String,Integer>(); // reset cart
+            		session.setAttribute("cart", am);
+            		
             	}
             	
+            	response.sendRedirect("./auth_success");
+            	
             	
             }
-            
-            session.setAttribute("user_id",ccid );
-            
-            if(flag==false )
-             response.sendRedirect("./loginerror");
-            else 
-            {
-           
-             session.setAttribute("login",1 );
-             session.setAttribute("user_id",ccid );
-             response.sendRedirect("./Main");
+            else {
+            	
+            	response.sendRedirect("./auth_error");
             }
+            
+            
+           
             rs.close();
             
             statement.close();

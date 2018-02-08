@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class movie_page extends HttpServlet {
+public class star_page extends HttpServlet {
     /**
 	 * 
 	 */
@@ -121,7 +121,7 @@ public class movie_page extends HttpServlet {
       
             Statement statement = dbcon.createStatement();
             
-            String query = "Select * from movies,ratings  where movies.title = '"+id+"' and movies.id = ratings.movieId  ;";
+            String query = "Select * from stars  where name = '"+id+"';";
             
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
@@ -134,29 +134,21 @@ public class movie_page extends HttpServlet {
             while (rs.next()) {
                 
                 
-                String m_title = rs.getString(2);
-                String m_year = rs.getString(3);
-                String m_director = rs.getString(4);
-                String m_rating = rs.getString(6);
-               
                 
-                String query2 = "select * from movies,genres_in_movies,genres where movies.id='"+rs.getString(1) +"' and movies.id = movieId and genreId = genres.id;";
-                
-                Statement statement2 = dbcon.createStatement();
-                ResultSet rs2 = statement2.executeQuery(query2);
-                String m_genres = "";
-                while(rs2.next())m_genres += rs2.getString(8)+",";
-                
-                rs2.close();
-                statement2.close();
+                String s_name = rs.getString(2);
+                String s_birthYear = rs.getString(3);
                 
                 
-                String query3 = "select * from movies,stars_in_movies,stars where movies.id='"+rs.getString(1) +"' and movies.id = movieId and starId = stars.id;";
+                
+                
+                
+                
+                String query3 = "select movies.title from movies,stars_in_movies,stars where stars.name='"+id+"'  and movies.id = movieId and starId = stars.id;";
                 
                 String m_stars = "";
                 Statement statement3 = dbcon.createStatement();
                 ResultSet rs3 = statement3.executeQuery(query3);
-                while(rs3.next()) m_stars += "<a id ='"+rs3.getString(8)+"' onclick = foo(this.id)>"+rs3.getString(8) + "</a>,";
+                while(rs3.next()) m_stars += "<a id='"+rs3.getString(1)+"' onclick = foo(this.id)>"+rs3.getString(1) + ",</a>";
                 
                 rs3.close();
                 statement3.close();
@@ -165,21 +157,18 @@ public class movie_page extends HttpServlet {
                 
                 
                 out.println("<div class='movie_box'>");
-                out.println( "<ul> <li><span class='title_text'>Title: " + m_title + "</span></li>" + "<li>Year: " + m_year + "</li>" + "<li>Director: " + m_director + "</li>" + "<li>Rate: "
-                        +m_rating+"</li>"+"<li>genre: "+m_genres+"</li>"+"<li>Actors: " +m_stars+ "</li>" +"<a href='./checkout?name="+m_title+"'><img src='https://d30y9cdsu7xlg0.cloudfront.net/png/28468-200.png' width='40px' heigth='40px'></a>"+"</ul>");
+                out.println( "<ul> <li><span class='title_text'>Name: " + s_name + "</span></li>" + "<li>Birthday: " + s_birthYear + "</li><li>" +m_stars+"</li></ul>");
                 out.println("</div>");
             }
 
             
              
             out.println("</div>");
-            
-            out.println("</div>");
             out.println("<script>\r\n" + 
             		"	   function foo(id){\r\n" + 
             		"		   \r\n" + 
             		"		   \r\n" + 
-            		"		   var url = \"./SingleStar?name=\"+id;\r\n" + 
+            		"		   var url = \"./SingleMovie?name=\"+id;\r\n" + 
             		"		   \r\n" + 
             		"		   window.location.href = url;\r\n" + 
             		"		  \r\n" + 
@@ -187,7 +176,6 @@ public class movie_page extends HttpServlet {
             		"	\r\n" + 
             		"	\r\n" + 
             		"	</script>");
-         
             
             
             rs.close();

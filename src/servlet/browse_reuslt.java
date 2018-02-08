@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class search extends HttpServlet {
+public class browse_reuslt extends HttpServlet {
     /**
 	 * 
 	 */
@@ -56,7 +56,7 @@ public class search extends HttpServlet {
         offset*=20;
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
-
+        
         out.println("<HTML><HEAD><TITLE>Movie List</TITLE></HEAD>");
         out.println("<style>");
        
@@ -114,10 +114,10 @@ public class search extends HttpServlet {
         
         
         out.println("</style>");
-        out.println("<BODY><div id='nav'> <ul><li>Sorted By:</li><li><a href='./Search?Search="+input+"&page_num="+pg+"&sort=tacd'>title acsending</a></li>"+
-        		""+"<li><a href='./Search?Search="+input+"&page_num="+pg+"&sort=tdcd'>title descding</a></li>"
-        		+"<li><a href='./Search?Search="+input+"&page_num="+pg+"&sort=yacd'>Year acsending</a></li>"
-        		+"<li><a href='./Search?Search="+input+"&page_num="+pg+"&sort=ydcd'>Year descding</a></li>"
+        out.println("<BODY><div id='nav'> <ul><li>Sorted By:</li><li><a href='./browse_genre?Search="+input+"&page_num="+pg+"&sort=tacd'>title acsending</a></li>"+
+        		""+"<li><a href='./browse_genre?Search="+input+"&page_num="+pg+"&sort=tdcd'>title descding</a></li>"
+        		+"<li><a href='./browse_genre?Search="+input+"&page_num="+pg+"&sort=yacd'>Year acsending</a></li>"
+        		+"<li><a href='./browse_genre?Search="+input+"&page_num="+pg+"&sort=ydcd'>Year descding</a></li>"
         		+ "<li>Home</li> <li>Movie</li> <li><a href='./buy'>Purchase</a></li></ul>    </div>");
         out.println("<div id='banner'><img id='top20'src='https://www.pcc.edu/about/awards/images/top-20.png' alt='Top 20' width = 150px; >  </div>");
         out.println("<div class=wrapper>");
@@ -154,19 +154,19 @@ public class search extends HttpServlet {
             
             
             System.out.println(input);
-            String query = "Select distinct(movies.id),title,year,director from movies,stars,stars_in_movies  where movies.id = movieId and starId = stars.id and  "
-            		+ "(title like'%" +input+"%' or stars.name like '%"+input+"%' or movies.year like '%"+input+"%') "
-            				+ " order by "+colunmn+" "+ order_type+"  limit 20 offset "+offset+" ;";
+            String query = "Select distinct(movies.id),title,year,director from movies,genres,genres_in_movies  where movies.id = movieId and genreId = genres.id and genres.name = '"+input+"'  "
+                   + " order by "+colunmn+" "+ order_type+"  limit 20 offset "+offset+" ;";
             
-            String[] input_a = input.split(" ");
-            for (int i=0;i<input_a.length;i++)
-            	System.out.println();  // how to deal multiple inputs 
+            
+            
+            
+
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
                
             //Count rows
             int  movie_nums = 0;
-            String count_query = "Select count(distinct(movies.id)) from movies,stars,stars_in_movies  where movies.id = movieId and starId = stars.id and  (title like'%" +input+"%' or stars.name like '%"+input+"%' or movies.year like '%"+input+"%') ;";
+            String count_query = "Select count(distinct(movies.id)) from movies,genres,genres_in_movies  where movies.id = movieId and genreId = genres.id and genres.name = '"+input+"'  ";
             Statement count_state = dbcon.createStatement();
             ResultSet count = count_state.executeQuery(count_query);
             while(count.next()) {
@@ -251,12 +251,12 @@ public class search extends HttpServlet {
             
             out.println("<div id='page_control'>");
             out.println("<ul >");
-            out.println("<listyle='display:inline;'><a href=./Search?Search="+input+"&page_num="+Math.max((pg-1),1)+"><img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Angle_left_font_awesome.svg/768px-Angle_left_font_awesome.svg.png' width='20px' height='20px'></a></li>");
+            out.println("<listyle='display:inline;'><a href=./browse_genre?Search="+input+"&page_num="+Math.max((pg-1),1)+"><img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Angle_left_font_awesome.svg/768px-Angle_left_font_awesome.svg.png' width='20px' height='20px'></a></li>");
             if(movie_nums>20)
             {
             	for(int i = (0+pg);i<Math.min((21+pg),movie_nums);i++)
             	{
-            		out.println("<li style='display:inline;'><a style = 'text-decoration:none;color:white;background:gray;'href=./Search?Search="+input+"&page_num="+i+">"+i+"</a></li>");
+            		out.println("<li style='display:inline;'><a style = 'text-decoration:none;color:white;background:gray;'href=./browse_genre?Search="+input+"&page_num="+i+">"+i+"</a></li>");
             	}
             }
             
@@ -264,13 +264,13 @@ public class search extends HttpServlet {
             {
             	for(int i =1;i<movie_nums;i++)
             	{
-            		out.println("<li style='display:inline;'><a style ='text-decoration:none;color:white;background:gray; ' href=./Search?Search="+input+"&page_num="+i+">"+i+"</a></li>");
+            		out.println("<li style='display:inline;'><a style ='text-decoration:none;color:white;background:gray; ' href=./browse_genre?Search="+input+"&page_num="+i+">"+i+"</a></li>");
             	}
             	
             	
             }
             
-            out.println("<li style='display:inline;'><a href=./Search?Search="+input+"&page_num="+Math.min((pg+1), movie_nums)+"><img src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Angle_right_font_awesome.svg/120px-Angle_right_font_awesome.svg.png' width='20px' height='20px'></a></li>");
+            out.println("<li style='display:inline;'><a href=./browse_genre?Search="+input+"&page_num="+Math.min((pg+1), movie_nums)+"><img src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Angle_right_font_awesome.svg/120px-Angle_right_font_awesome.svg.png' width='20px' height='20px'></a></li>");
             out.println("</ul>");
             out.println("</div>");
             

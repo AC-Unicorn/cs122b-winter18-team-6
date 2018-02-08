@@ -1,0 +1,122 @@
+
+
+
+
+<!doctype html>
+<html>
+  <head>
+    <style>
+       
+    
+      body{
+        background:url("https://upload.wikimedia.org/wikipedia/commons/1/1b/Claude_Monet_-_Woman_with_a_Parasol_-_Madame_Monet_and_Her_Son_-_Google_Art_Project.jpg");
+        background-size:cover;
+      }
+        
+      h1{
+           font-family: Brush Script MT, Brush Script Std, cursive;
+           color: white;
+        }    
+      #login_div{
+        width:300px;
+        height:400px;
+        margin: 25% 40%;
+	padding:0;
+        opacity:0.7;
+        background-color:#f3f3f3;	
+      }
+      #login{
+	width:73%;	
+        height:80%;
+        padding:0px;
+        padding-top:60px;
+        margin:3% 13.5%;
+        
+        
+      }    
+      #login input{
+        float:center;
+        width:190px;
+	height:30px;
+        margin:0;
+      }
+      #login p{
+        margin:0;
+	font-size:0.9em;
+        font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+      } 
+
+      foot p{
+         font-family:Brush Script MT, Brush Script Std, cursive;;
+         float:right;
+         color: ivory;
+         font-size: 1.4em;  
+      }
+        
+        
+    </style>
+  <title>Fablix</title>
+  </head>
+
+
+
+
+  <body>
+  
+ 
+    <h1>Mizushima's Open Art Gallery</h1>
+    <div id="login_div">
+    <form id="login" method="POST" action="./checkout_auth">
+        <p>first name<br></p>
+ 	    <input type="text" name="firstName">
+        <p><br>last name<br></p>        
+        <input type="text" name = "lastName" >
+        <br>
+        
+        <p>credit card<br></p>
+ 	    <input type="text" name="creditCard">
+        <p><br>expire date<br></p>        
+        <input type="text" name = "expireDate" >
+        <br>
+        
+        
+        
+        <input type="submit" >
+        
+        
+    </form>
+    </div>          
+
+
+
+
+  </body>
+  <foot>
+      <p>All rights reserved by 42</p>
+  </foot>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
