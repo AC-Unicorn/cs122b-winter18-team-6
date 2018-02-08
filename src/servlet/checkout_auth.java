@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -110,11 +111,17 @@ public class checkout_auth extends HttpServlet {
             		      rs1.close();
             		      s1.close();
             		      
-            		      Date now = new Date();
+            		      Date dt = new Date();
+            		      System.out.println(dt.getYear()+1900);
+            		      System.out.println(dt.getMonth()+1);
+            		      System.out.println(dt.getDate());
+            		      
+            		      String ds = dt.getYear()+1900 +"/" + (dt.getMonth() +1) +"/" +dt.getDate();
+            		      
             		      int ccId = (int) session.getAttribute("user_id");
             		      System.out.println(id);
             		      if(id!=null&&id!="") {
-            		      String update = "INSERT INTO sales VALUES(0,"+ccId+",'"+id+"', '2005/01/12');";
+            		      String update = "INSERT INTO sales VALUES(0,"+ccId+",'"+id+"', '"+ds+"');";
             		      Statement s2 = dbcon.createStatement();
             		      int n = s2.executeUpdate(update);
             		      

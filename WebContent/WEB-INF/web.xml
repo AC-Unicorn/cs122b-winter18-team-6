@@ -10,20 +10,28 @@
        <servlet-class>servlet.TomcatTest</servlet-class>
    </servlet>
  
-   <servlet>
-       <servlet-name>loginServlet</servlet-name>
-       <servlet-class>servlet.login</servlet-class>	
-   </servlet>
+   
    
    <servlet-mapping>
        <servlet-name>movieServlet</servlet-name>
        <url-pattern>/hello</url-pattern>
    </servlet-mapping>
-    
+   
+    <servlet>
+       <servlet-name>loginServlet</servlet-name>
+       <servlet-class>servlet.login</servlet-class>
+   </servlet>
+ 
+   
+   
    <servlet-mapping>
        <servlet-name>loginServlet</servlet-name>
        <url-pattern>/form</url-pattern>
-   </servlet-mapping> 
+   </servlet-mapping>  
+   
+   
+    
+
    <servlet>
     <servlet-name>loginerror</servlet-name>
     <jsp-file>/error.html</jsp-file>
@@ -93,6 +101,17 @@
     <servlet-name>browse_genre</servlet-name>
     <url-pattern>/browse_genre</url-pattern>
   </servlet-mapping>   
+  
+  
+   <servlet>
+       <servlet-name>browse_title</servlet-name>
+       <servlet-class>servlet.browse_title_reuslt</servlet-class> 
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>browse_title</servlet-name>
+    <url-pattern>/btr</url-pattern>
+  </servlet-mapping>   
+  
   
   <servlet>
        <servlet-name>add_to_cart</servlet-name>
@@ -166,6 +185,23 @@
     <servlet-name>auth_error</servlet-name>
     <url-pattern>/auth_error</url-pattern>
   </servlet-mapping>    
+  
+  
+  
+  
+  
+  
+  <servlet>
+       <servlet-name>explanation</servlet-name>
+       <jsp-file>/like-predicate.html</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>explanation</servlet-name>
+    <url-pattern>/reports</url-pattern>
+  </servlet-mapping>    
+  
+  
+  
   
   
   
