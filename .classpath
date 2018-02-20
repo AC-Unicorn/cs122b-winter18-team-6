@@ -11,5 +11,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/cao/Desktop/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/TomcatFormReCaptcha/WebContent/WEB-INF/lib/javax.json-1.0.jar"/>
+	<classpathentry kind="lib" path="/TomcatFormReCaptcha/WebContent/WEB-INF/lib/recaptcha4j-0.0.7.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
