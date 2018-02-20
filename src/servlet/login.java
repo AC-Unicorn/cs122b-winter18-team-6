@@ -10,6 +10,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.net.*;
+
+
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.net.ssl.HttpsURLConnection;
+ 
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +31,7 @@ public class login extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	/**
 	 * 
 	 */
@@ -72,7 +82,13 @@ public class login extends HttpServlet {
 //            	response.sendRedirect("./Main");
 //            }
 //            
+            /// recaptcha
+        	String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+        	System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
+        	boolean valid = VerifyUtils.verify(gRecaptchaResponse);
+           
             
+            ///
             
                
             
@@ -100,7 +116,7 @@ public class login extends HttpServlet {
             
             session.setAttribute("user_id",ccid );
             
-            if(flag==false )
+            if(flag==false || !valid )
              response.sendRedirect("./loginerror");
             else 
             {

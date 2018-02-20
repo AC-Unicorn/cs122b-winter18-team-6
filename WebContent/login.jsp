@@ -7,6 +7,7 @@
 <!doctype html>
 <html>
   <head>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <style>
        
     
@@ -88,7 +89,7 @@
         <input type="password" name = "Password" >
         <br>
         <input type="submit" >
-        
+        <div class="g-recaptcha" data-sitekey="6LcPXUcUAAAAAMOqo_hlmOBhboUcNktLSoBVyd87"></div>
         <a href="https://www.google.com/search?ei=9DNmWvb-JoesjwPbwYTgBQ&q=dumbest+people+&oq=dumbest+people+&gs_l=psy-ab.3..0l2.15603.28417.0.28585.41.25.11.4.4.0.101.1771.23j1.24.0....0...1c.1.64.psy-ab..3.38.1863...46j0i67k1j0i131i67k1j0i131k1j0i10k1j0i46k1.0.ssu4k2s3cQ8">Forget password?</a>
         <p>It is necessary to login before you view any web content</p>
     </form>
