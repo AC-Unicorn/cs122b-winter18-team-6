@@ -10,7 +10,7 @@
    <user-data-constraint>
     <transport-guarantee>CONFIDENTIAL</transport-guarantee>
    </user-data-constraint>
- </security-constraint>
+ </security-constraint> 
   
   
    <servlet>
@@ -195,8 +195,47 @@
   </servlet-mapping>    
   
   
+  <servlet>
+       <servlet-name>dashboard</servlet-name>
+       <jsp-file>/dashboard_login.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dashboard</servlet-name>
+    <url-pattern>/_dashboard</url-pattern>
+  </servlet-mapping>    
+  
+  <servlet>
+       <servlet-name>dashboard_verify</servlet-name>
+       <servlet-class>servlet.dashboard_verify</servlet-class> 
+   </servlet>
+ <servlet-mapping>
+    <servlet-name>dashboard_verify</servlet-name>
+    <url-pattern>/dashboard_verify</url-pattern>
+ </servlet-mapping>  
   
   
+  
+  
+ <servlet>
+       <servlet-name>dashboard_insert_star</servlet-name>
+       <servlet-class>servlet.dashboard_insert_star</servlet-class> 
+   </servlet>
+ <servlet-mapping>
+    <servlet-name>dashboard_insert_star</servlet-name>
+    <url-pattern>/dashboard_insert_star</url-pattern>
+ </servlet-mapping>  
+  
+  
+  
+  
+    <servlet>
+       <servlet-name>dashboard_insert_movie</servlet-name>
+       <servlet-class>servlet.dashboard_insert_movie</servlet-class> 
+   </servlet>
+ <servlet-mapping>
+    <servlet-name>dashboard_insert_movie</servlet-name>
+    <url-pattern>/dashboard_insert_movie</url-pattern>
+ </servlet-mapping>  
   
   
   <servlet>
