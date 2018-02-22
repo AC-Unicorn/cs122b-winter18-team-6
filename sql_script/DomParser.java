@@ -58,14 +58,14 @@ public class DomParser {
         parseDocument();
         parseActors();
         parseCasts();
-        System.out.println(movieMap.get("AA41").title);
+        System.out.println(movieMap.get("CC82").title);
         
         //insert movie at first 
         
         System.out.println(starMap.get("Willie Aames"));
         //then insert star and link them 
         
-        System.out.println(castMap.get("AA13").size());
+        System.out.println(castMap.size());
 		//insert genre finally
         
         insert();
@@ -145,6 +145,8 @@ public class DomParser {
         	s2.close();
         	
         	
+        	System.out.println("star size from xml file "+starMap.size());
+        	
         	System.out.println("movies size " + movie_titles.size());
         	System.out.println("genre size " + genre_names.size());
         	System.out.println("star size " + star_names.size());
@@ -172,9 +174,7 @@ public class DomParser {
         	String link_star = "insert into stars_in_movies values(?,?)";
         	String link_genre = "insert into genres_in_movies values(?,?)";
         	
-        	HashSet<String> inserted_movie = new HashSet<String>();
-        	HashSet<String> inserted_genre = new HashSet<String>();
-        	HashSet<String> inserted_star = new HashSet<String>();
+        
         	
         	try {
         		dbcon.setAutoCommit(false);
@@ -210,6 +210,7 @@ public class DomParser {
         	            		m_director = m.director;
         	            	ps1.setString(4, m_director);
         	            	ps1.addBatch();
+        	            	movie_titles.put(m_title,m_id);
         	            	for(int i=0;i<m.genre.size();i++) {
         	            		
         	            		String g_name = m.genre.get(i);
@@ -257,13 +258,14 @@ public class DomParser {
         	    	}
         	    	catch(NullPointerException e)
         	    	{
-        	    		System.out.println("invalid c_id:"+c_id);
+        	    		System.out.println("invalid movie id:"+c_id);
         	    		
         	    	}
-        	    	if(movie_titles.containsKey(c_title))
+        	    	if(movie_titles.containsKey(c_title)) // we can only insert with a exist movie
     	    			c_id = movie_titles.get(c_title);
-    	    		else
-    	    			c_id = movieIdEncode(c_id);
+        	    	else
+        	    		c_id = "NULL";
+    	    		
         	    	
         	    	for(int i=0;i<sList.size();i++)
         	    	{
@@ -277,6 +279,8 @@ public class DomParser {
         	    		
         	    		String s_name = sList.get(i);
         	    		if(!star_names.containsKey(s_name)&&!s_name.equals("NULL")&&!c_id.equals("NULL")) {
+        	    			
+        	    			
         	    			int s_year = 0000;
         	    			try {
         	    			 s_year = ((star)starMap.get(s_name)).year;
@@ -286,7 +290,7 @@ public class DomParser {
         	    				
         	    				ps2.setNull(3, java.sql.Types.INTEGER);
         	    			}
-        	    			s_id = String.format("%d", (s_min - count_s));
+        	    			s_id = movieIdEncode(String.format("%d", (s_min - count_s)));
         	    			ps2.setString(1, s_id);
         	    			ps2.setString(2, s_name);
         	    			
@@ -295,17 +299,18 @@ public class DomParser {
         	    			ps4.setString(2,c_id);
         	    			ps4.addBatch();
         	    			star_names.put(s_name,s_id);
+        	    			count_s++;
         	    		}
         	    		else {
         	    			s_id = star_names.get(s_name);
-        	    			if(s_id!=null) {
+        	    			if(s_id!=null && c_id!="NULL") {
         	    				ps4.setString(1, s_id);
-        	    				ps4.setString(2,c_id);
+        	    				ps4.setString(2, c_id);
         	    				ps4.addBatch();
         	    			}
         	    		}
         	    		
-        	    		count_s++;
+        	    		
         	    		
         	    		
         	    		
@@ -418,6 +423,8 @@ public class DomParser {
 	private void parseCasts() {
 		Element docEle = cast.getDocumentElement();
 		NodeList nl = docEle.getElementsByTagName("filmc");
+		
+		
 		if (nl != null && nl.getLength() > 0) {
             for (int i = 0; i < nl.getLength(); i++) {
 
@@ -431,7 +438,7 @@ public class DomParser {
                 NodeList nl1 = el.getElementsByTagName("m");
                 for(int j=0;j<nl1.getLength();j++)
                 {
-                	Element el1  = (Element) nl1.item(i);
+                	Element el1  = (Element) nl1.item(j);
                 	
                 	String key = getTextValue(el1,"f");
                 	String value = getTextValue(el1,"a");
