@@ -84,7 +84,9 @@ fullname varchar(100)
 );
 
 INSERT INTO employees VALUES('classta@email.edu','classta','TA CS122B');
+INSERT INTO employees VALUES('a','a','a');
 
+drop procedure add_movie;
 
 DELIMITER $$ 
 
@@ -106,7 +108,7 @@ BEGIN
    
 	 
      set movieId = concat('tt',substring(uuid_short(),11,7));
-     set sid = (SELECT min(id)-1 from stars);
+     set sid = substring(uuid_short(),8,10);
      set gid = (SELECT max(id)+1 from genres);
      insert into movies value(movieId,mTitle,year,director);
 	 

@@ -12,7 +12,7 @@ import java.sql.Statement;
 
 import java.net.*;
 
-
+import java.util.UUID;
 
 import com.google.gson.JsonObject;
 import javax.net.ssl.HttpsURLConnection;
@@ -74,13 +74,7 @@ public class dashboard_insert_star extends HttpServlet {
             System.out.println("BreakPoint0");
             //find max stars id   
             
-            String maxId_s = "";
-            Statement maxId  = dbcon.createStatement();
-            ResultSet maxIdrs = maxId.executeQuery("select min(id)-1 from stars;");
-            while(maxIdrs.next())
-              maxId_s = maxIdrs.getString(1);
-            maxIdrs.close();
-            maxId.close();
+            
             //end 
             
             
@@ -89,8 +83,8 @@ public class dashboard_insert_star extends HttpServlet {
            
             
             //find if star already in the stars table
-            
-            String id = maxId_s; // actually min id minus 1
+            UUID uuid  =  UUID.randomUUID(); 
+            String id = uuid.toString().substring(0, 8); // actually min id minus 1
             String sname = request.getParameter("name");
             String byear = request.getParameter("birth_year");
             

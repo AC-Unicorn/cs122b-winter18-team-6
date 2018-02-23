@@ -3,7 +3,7 @@
   <display-name>Fablix</display-name>
  
  
- <security-constraint>
+  <security-constraint>
    <web-resource-collection>
     <web-resource-name>HTTPSOnly</web-resource-name>
     <url-pattern>/*</url-pattern>
