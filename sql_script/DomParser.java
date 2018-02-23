@@ -97,8 +97,11 @@ public class DomParser {
         	ResultSet rs1  = s1.executeQuery("select distinct(title),id from movies;");
         	
         	HashMap<String,String> movie_titles = new HashMap<String,String>(); //title->id
-        	HashMap<String,String> star_names = new HashMap<String,String>(); //title->id
-        	HashMap<String,Integer> genre_names = new HashMap<String,Integer>(); //title->id
+        	HashMap<String,String> star_names = new HashMap<String,String>(); //s_name->id
+        	HashMap<String,Integer> genre_names = new HashMap<String,Integer>(); //g_name->id
+        	
+        	
+        	
         	
         	while(rs1.next())
         	{
@@ -132,6 +135,12 @@ public class DomParser {
         	rs2.close();
         	s2.close();
         	
+        	
+        	
+        	
+        	
+        	
+        	
         	int g_max = 1998;
         	s2 = dbcon.createStatement();
         	rs2 = s2.executeQuery("select max(id)+1 from genres;");
@@ -149,6 +158,12 @@ public class DomParser {
         	
         	rs2.close();
         	s2.close();
+        	
+        	
+        	
+        	
+        	
+        	
         	
         	
         	System.out.println("number of star  from xml file "+starMap.size());
@@ -316,7 +331,7 @@ public class DomParser {
         	    	}
         	    	catch(NullPointerException e)
         	    	{
-        	    		System.out.println("invalid movie id:"+c_id);
+        	    		System.out.println("invalid movie id due to the movie not exsiting in either our database nor xml file :"+c_id);
         	    		
         	    	}
         	    	if(movie_titles.containsKey(c_title)) // we can only link star with a existing movie
@@ -334,7 +349,21 @@ public class DomParser {
         	    			
         	    			s_id = star_names.get(s_name);
         	    			
-        	    			if(s_id!=null) {
+        	    			
+        	    			int flag = 0;
+        	    			s2  = dbcon.createStatement();
+        	    			String q = String.format("select count(1) from stars_in_movies where starId = '%s' and movieId = '%s';",s_id,c_id);
+        	           	 	rs2  = s2.executeQuery(q);
+        	           	
+        	           	 	while(rs2.next())
+        	           	 		flag = rs2.getInt(1);
+        	           	 	
+        	           	
+        	           		rs2.close();
+        	           		s2.close();
+        	    			
+        	    			
+        	    			if(s_id!=null&&flag==0) {
         	    				ps4.setString(1, s_id);
         	    				ps4.setString(2, c_id);
         	    				ps4.addBatch();
@@ -369,6 +398,23 @@ public class DomParser {
         	    System.out.println("Successfully Update " + count_rows(iNoRows3) + " rows of stars");
         	    System.out.println("Successfully Update " + count_rows(iNoRows4) + " rows of stars in movies");
         		
+        	    if(count_rows(iNoRows)==0)
+        	    	System.out.println("Duplicate record, no rows update in movies table");
+        	    
+        	    if(count_rows(iNoRows1)==0)
+        	    	System.out.println("Duplicate record, no rows update in genres table");
+        	    
+        	    if(count_rows(iNoRows2)==0)
+        	    	System.out.println("Duplicate record, no rows update in genres in movie table");
+        	    
+        	    if(count_rows(iNoRows3)==0)
+        	    	System.out.println("Duplicate record, no rows update in stars table");
+        	    
+        	    if(count_rows(iNoRows4)==0)
+        	    	System.out.println("Duplicate record, no rows update in stars_in_movies table");
+        	    
+        	    
+        	    
         	}
         	catch (SQLException e)
         	{
