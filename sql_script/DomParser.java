@@ -58,15 +58,7 @@ public class DomParser {
         parseDocument();
         parseActors();
         parseCasts();
-        System.out.println(movieMap.get("CC82").title);
         
-        //insert movie at first 
-        
-        System.out.println(starMap.get("Willie Aames"));
-        //then insert star and link them 
-        
-        System.out.println(castMap.size());
-		//insert genre finally
         
         insert();
         
@@ -159,9 +151,9 @@ public class DomParser {
         	s2.close();
         	
         	
-        	System.out.println("star size from xml file "+starMap.size());
-        	
-        	
+        	System.out.println("number of star  from xml file "+starMap.size());
+        	System.out.println("number of movie from xml file "+movieMap.size());
+        	System.out.println("number of movie in cast from xml file "+castMap.size());
         	
         	System.out.println("movies size " + movie_titles.size());
         	System.out.println("genre size " + genre_names.size());
@@ -258,8 +250,58 @@ public class DomParser {
         	            
         	            //it.remove(); // avoids a ConcurrentModificationException
         	    }
-        		
+        		//insert star to DB only insert non exist star
+        	    
+        	    it = starMap.entrySet().iterator();
+        	    int count_st=0;
+        	    int testc1 = 0;
+        	    while(it.hasNext())
+        	    {
+        	    	Map.Entry pair = (Map.Entry)it.next();
+        	    	
+        	    	String s_name = (String) pair.getKey();
+        	    	String s_id ="";
+        	    	
+    	    		if(!star_names.containsKey(s_name)&&!s_name.equals("NULL")) {
+    	    			
+    	    			
+    	    			int s_year = 0000;
+    	    			try {
+    	    			 s_year = ((star)starMap.get(s_name)).year;
+    	    			 ps2.setInt(3, s_year);
+    	    			}
+    	    			catch(NullPointerException e){
+    	    				
+    	    				ps2.setNull(3, java.sql.Types.INTEGER);
+    	    			}
+    	    			s_id = movieIdEncode(String.format("%d", (s_min - count_st)));
+    	    			ps2.setString(1, s_id);
+    	    			ps2.setString(2, s_name);
+    	    			
+    	    			ps2.addBatch();
+    	    			
+    	    			star_names.put(s_name,s_id);
+    	    			count_st++;
+    	    			testc1++;
+    	    		}
+        	    	
+        	    	
+        	    	
+        	    	
+        	    }
+        	    
+        	    
+        	    
+        	    
+        	    //end insert star
+        	    
+        	    
+        	    //link star and moive, only link movie and star who is exist
         	    it = castMap.entrySet().iterator();
+        	    
+        	   
+        	    int testc2 = 0;
+        	    
         	    int count_s = 0;
         	    while (it.hasNext()) {
         	    	Map.Entry pair = (Map.Entry)it.next();
@@ -267,7 +309,7 @@ public class DomParser {
         	    	
         	    	
         	    	
-        	    	String c_id = (String) pair.getKey();//raw movie id
+        	    	String c_id = (String)pair.getKey();//raw movie id
         	    	String c_title = "NULL";
         	    	try {
         	    		c_title = movieMap.get(c_id).title;
@@ -277,7 +319,7 @@ public class DomParser {
         	    		System.out.println("invalid movie id:"+c_id);
         	    		
         	    	}
-        	    	if(movie_titles.containsKey(c_title)) // we can only insert with a exist movie
+        	    	if(movie_titles.containsKey(c_title)) // we can only link star with a existing movie
     	    			c_id = movie_titles.get(c_title);
         	    	else
         	    		c_id = "NULL";
@@ -286,51 +328,21 @@ public class DomParser {
         	    	for(int i=0;i<sList.size();i++)
         	    	{
         	    		String s_id ="";
-        	    		
-        	    		
-        	    		
-        	    		
-        	    		
-        	    		
-        	    		
         	    		String s_name = sList.get(i);
-        	    		if(!star_names.containsKey(s_name)&&!s_name.equals("NULL")&&!c_id.equals("NULL")) {
+        	    		
+        	    		if(star_names.containsKey(s_name)&&!s_name.equals("NULL")&&!c_id.equals("NULL")) {
         	    			
+        	    			s_id = star_names.get(s_name);
         	    			
-        	    			int s_year = 0000;
-        	    			try {
-        	    			 s_year = ((star)starMap.get(s_name)).year;
-        	    			 ps2.setInt(3, s_year);
-        	    			}
-        	    			catch(NullPointerException e){
-        	    				
-        	    				ps2.setNull(3, java.sql.Types.INTEGER);
-        	    			}
-        	    			s_id = movieIdEncode(String.format("%d", (s_min - count_s)));
-        	    			ps2.setString(1, s_id);
-        	    			ps2.setString(2, s_name);
-        	    			
-        	    			ps2.addBatch();
-        	    			ps4.setString(1, s_id);
-        	    			ps4.setString(2,c_id);
-        	    			ps4.addBatch();
-        	    			star_names.put(s_name,s_id);
-        	    			count_s++;
-        	    		}
-        	    		else {
-        	    			if(s_name!="NULL") {
-        	    			  s_id = star_names.get(s_name);
-        	    			if(s_id!=null && c_id!="NULL") {
+        	    			if(s_id!=null) {
         	    				ps4.setString(1, s_id);
         	    				ps4.setString(2, c_id);
         	    				ps4.addBatch();
-        	    			}
+        	    				count_s++;
+        	    				testc2++;
         	    			}
         	    		}
-        	    		
-        	    		
-        	    		
-        	    		
+    
         	    		
         	    	}
         	    	
@@ -347,6 +359,8 @@ public class DomParser {
         	    
         	    
         	    dbcon.commit();
+        	    
+        	    
         	    
         	    
         	    System.out.println("Successfully Update " + count_rows(iNoRows) + " rows of movie");
