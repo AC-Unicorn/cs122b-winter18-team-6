@@ -73,6 +73,20 @@ public class DomParser {
       
        
         
+        
+        
+        
+	}
+	
+	
+	
+	private int count_rows(int[] row)
+	{
+		int i = row.length-1;
+		int total = 0;
+		for(;i>=0;i--)
+			total+=row[i];
+		return total;
 	}
 	
 	private void insert() {
@@ -146,6 +160,8 @@ public class DomParser {
         	
         	
         	System.out.println("star size from xml file "+starMap.size());
+        	
+        	
         	
         	System.out.println("movies size " + movie_titles.size());
         	System.out.println("genre size " + genre_names.size());
@@ -302,11 +318,13 @@ public class DomParser {
         	    			count_s++;
         	    		}
         	    		else {
-        	    			s_id = star_names.get(s_name);
+        	    			if(s_name!="NULL") {
+        	    			  s_id = star_names.get(s_name);
         	    			if(s_id!=null && c_id!="NULL") {
         	    				ps4.setString(1, s_id);
         	    				ps4.setString(2, c_id);
         	    				ps4.addBatch();
+        	    			}
         	    			}
         	    		}
         	    		
@@ -329,12 +347,24 @@ public class DomParser {
         	    
         	    
         	    dbcon.commit();
+        	    
+        	    
+        	    System.out.println("Successfully Update " + count_rows(iNoRows) + " rows of movie");
+        	    System.out.println("Successfully Update " + count_rows(iNoRows1) + " rows of genre");
+        	    System.out.println("Successfully Update " + count_rows(iNoRows2) + " rows of genres in movies");
+        	    System.out.println("Successfully Update " + count_rows(iNoRows3) + " rows of stars");
+        	    System.out.println("Successfully Update " + count_rows(iNoRows4) + " rows of stars in movies");
         		
         	}
         	catch (SQLException e)
         	{
         		e.printStackTrace();
+        		System.out.println("All rows fail to insert");
         	}
+        	
+        	
+        	
+        		
         	
         	
         	

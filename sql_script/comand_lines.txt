@@ -1,0 +1,4 @@
+java -cp "../tmp/test/mysql-connector-java-5.0.8-bin.jar:" test.DomParser  //in tmp folder
+
+
+javac *.java  //in test folder
