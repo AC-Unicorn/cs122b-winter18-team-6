@@ -110,18 +110,18 @@
       <form id="add_movie" method="post" >
         
         <p>Movie name</p>        
-        <input type="text" name = "m_name" >
+        <input type="text" name = "m_name" required>
         <p>Publish year</p>
         <input type="number" name="m_year">
         <p>Director</p>
-        <input type="text" name = "m_director" value="none">
+        <input type="text" name = "m_director" value="none" required>
         <p>Star name</p>
-        <input type="text" name = "s_name" value="none">
+        <input type="text" name = "s_name" value="none" required>
         <p>Star birth year</p>
-        <input type="number" name="s_year">
+        <input type="number" name="s_year" required>
         <p>Genre</p>
-        <input type="text" name="g_name">
-        <input type="submit" value="add a movie">
+        <input type="text" name="g_name" required>
+        <input type="submit" value="add a movie" required>
         <p id="m_status"></p>
         
       </form>
