@@ -41,12 +41,25 @@ public class search extends HttpServlet {
         response.setContentType("text/html"); // Response mime type
         
         String input = request.getParameter("Search");
+        String[] input_array = input.split(" ");
+        String reformat_input = "";
+        int i_s = 0;
+        for (int i=0;i<input_array.length-1;i++)
+        {
+      	
+      	  reformat_input += input_array[i];
+      	  reformat_input +="%20";
+          i_s++;
+        }
+        reformat_input += input_array[i_s];
+        
+        System.out.println(reformat_input);
         String input_year = request.getParameter("Year");
         String input_director = request.getParameter("director");
         String input_star = request.getParameter("star");
         
         
-        String output_url = input + "&Year="+input_year+"&director="+input_director+"&star="+input_star;
+        String output_url = reformat_input + "&Year="+input_year+"&director="+input_director+"&star="+input_star;
         //this will be write in url 
         
         
@@ -160,12 +173,24 @@ public class search extends HttpServlet {
             }
             
             
-            System.out.println(input);
+            
             //
+            
+            
+            
+            String new_input = "match(title) against ('+";
+            
+
+            
+            new_input += input;
+            
+            new_input += "*' in boolean mode)";
+            System.out.println(new_input);
+            
             String query = "Select distinct(movies.id),title,year,director from movies,stars,stars_in_movies  where movies.id = movieId and starId = stars.id and  "
-            		+ "(title like'%" +input+"%' and stars.name like '%"+input_star+"%' and movies.year like '%"+input_year+"%' and movies.director like '%"+input_director+"%') "
+            		+ new_input
             				+ " order by "+colunmn+" "+ order_type+"  limit 20 offset "+offset+" ;";
-            String count_query = "Select count(distinct(movies.id)) from movies,stars,stars_in_movies  where movies.id = movieId and starId = stars.id and  (title like'%" +input+"%' and stars.name like '%"+input_star+"%' and movies.year like '%"+input_year+"%' and movies.director like '%"+input_director+"%') ;";
+            String count_query = "Select count(distinct(movies.id)) from movies  where  "+new_input+";";
             //
             
             
@@ -188,7 +213,7 @@ public class search extends HttpServlet {
             count.close();
             count_state.close();
             
-           
+          
             
             //Count rows ends
           
@@ -259,7 +284,7 @@ public class search extends HttpServlet {
             
              
             out.println("</div>");
-            
+            System.out.println(output_url);
             
             out.println("<div id='page_control'>");
             out.println("<ul >");

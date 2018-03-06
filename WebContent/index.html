@@ -43,8 +43,8 @@
                 width: 30%;
                 height: 30px;
                 margin-left: 30%;
+                margin-top:20%;
                 
-                border-radius: 19%;
                 font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
                 font-size: 1.2rem;
             }
@@ -101,9 +101,19 @@
                 font-size: 1.4em;  
             }
             
+            .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+			.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+			.autocomplete-selected { background: #F0F0F0; }
+			.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+			.autocomplete-group { padding: 2px 5px; color:red; font-size:1.2em; }
+			.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+            
+            
             
         </style>
-
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.7/jquery.autocomplete.min.js"></script>
+		 
     </head>
 
     
@@ -119,15 +129,9 @@
         <a href='./buy'>Purchase</a>
         </div>
         <div id="search">
-            <form id="search_block" action="./Search">
-                <h3>Movie Name</h3>
-                <input id="search_b" type="text" name="Search" value="" onclick="this.value=''" >
-                <h3>Movie Year</h3>
-                <input id="search_c" type="text" name="Year" value="" onclick="this.value=''" >
-                <h3>Movie director</h3>
-                <input id="search_d" type="text" name="director" value="" onclick="this.value=''" >
-                <h3>Movie star</h3>
-                <input id="search_e" type="text" name="star" value="" onclick="this.value=''" >
+            <form id="search_block" action="./Search" >                
+                <input type="text" name="Search" id="autocomplete"/>
+                
                 <button type="submit" value="search">search</button>
             </form> 
         </div>
@@ -141,22 +145,10 @@
             
         </div>
     
-	  <script>
-	  	    function test(id)
-	  	    {
-	  	    	
-	  	    	var url = "./browse?name="+id;
-	  	    	window.location.href = url;
-	  	    }
-	  	    
-	  	  
 	  
-	  </script>
+	<script src="index.js"></script>
 	
     </body>
-    <foot>
-      <p>All rights reserved by 42</p>
-    </foot>
 
 
 
