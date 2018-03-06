@@ -139,5 +139,9 @@ $$
 
 DELIMITER ; 
 
+alter table movies add fulltext (title);
 
 
+alter table stars add fulltext (name); 
+
+alter table genres add fulltext (name);

@@ -3,7 +3,7 @@
   <display-name>Fablix</display-name>
  
  
-  <security-constraint>
+ <!--   <security-constraint>
    <web-resource-collection>
     <web-resource-name>HTTPSOnly</web-resource-name>
     <url-pattern>/*</url-pattern>
@@ -12,7 +12,7 @@
     <transport-guarantee>CONFIDENTIAL</transport-guarantee>
    </user-data-constraint>
  </security-constraint> 
- 
+ -->
   
    <servlet>
        <servlet-name>movieServlet</servlet-name>
@@ -229,7 +229,7 @@
   
   
   
-    <servlet>
+ <servlet>
        <servlet-name>dashboard_insert_movie</servlet-name>
        <servlet-class>servlet.dashboard_insert_movie</servlet-class> 
    </servlet>
@@ -237,6 +237,19 @@
     <servlet-name>dashboard_insert_movie</servlet-name>
     <url-pattern>/dashboard_insert_movie</url-pattern>
  </servlet-mapping>  
+ 
+ 
+ 
+ <servlet>
+       <servlet-name>movie_suggestion</servlet-name>
+       <servlet-class>servlet.suggestion</servlet-class> 
+   </servlet>
+ <servlet-mapping>
+    <servlet-name>movie_suggestion</servlet-name>
+    <url-pattern>/movie-suggestion</url-pattern>
+ </servlet-mapping>  
+ 
+ 
   
   
   <servlet>
