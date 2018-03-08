@@ -71,7 +71,7 @@ public class suggestion extends HttpServlet {
             String name = request.getParameter("query");
             
             
-            String query = String.format("select title from movies where match(title) against ('+%s*' in boolean mode) or edth(title,'%s',3)=1;", name,name);
+            String query = String.format("select title from movies where match(title) against ('+%s*' in boolean mode) or edth(title,'%s',2)=1;", name,name);
             ResultSet rs = statement.executeQuery(query);
            
             JsonArray rsArray = new JsonArray();

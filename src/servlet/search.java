@@ -184,15 +184,16 @@ public class search extends HttpServlet {
             
             new_input += input;
             
-            new_input += "*' in boolean mode) or edth(name,'"+input+"',2)=1";
+            new_input += "*' in boolean mode) or edth(title,'"+input+"',2)=1";
             System.out.println(new_input);
             
-            String query = "Select distinct(movies.id),title,year,director from movies,stars,stars_in_movies  where movies.id = movieId and starId = stars.id and  "
+            String query = "Select distinct(movies.id),title,year,director from movies  where  "
             		+ new_input
             				+ " order by "+colunmn+" "+ order_type+"  limit 20 offset "+offset+" ;";
             String count_query = "Select count(distinct(movies.id)) from movies  where  "+new_input+";";
             //
             
+            System.out.println(query);
             
             input = input + "&Year="+input_year+"&director="+input_director+"&star="+input_star;
             //this will be write in url 

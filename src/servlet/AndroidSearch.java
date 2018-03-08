@@ -79,10 +79,10 @@ public class AndroidSearch extends HttpServlet {
             
             new_input += input;
             
-            new_input += "*' in boolean mode) or edth(name,'"+input+"',2)=1";
+            new_input += "*' in boolean mode) or edth(title,'"+input+"',2)=1";
             System.out.println(new_input);
             
-            String query = "Select distinct(movies.id),title,year,director from movies,stars,stars_in_movies  where movies.id = movieId and starId = stars.id and  "
+            String query = "Select distinct(movies.id),title,year,director from movies  where   "
             		+ new_input+" ;";
             
             //
