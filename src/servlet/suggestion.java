@@ -93,7 +93,7 @@ public class suggestion extends HttpServlet {
             
             
             //search in stars
-            String query1 = String.format("select name from stars where match(name) against ('+%s*' in boolean mode) or edth(title,'%s',3)=1;", name,name);
+            String query1 = String.format("select name from stars where match(name) against ('+%s*' in boolean mode) or edth(name,'%s',2)=1;", name,name);
             
             
             Statement statement2 = dbcon.createStatement();
