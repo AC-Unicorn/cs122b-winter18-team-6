@@ -262,9 +262,32 @@
   </servlet-mapping>    
   
   
+ <!-- per andorid app -->
   
+   <servlet>
+       <servlet-name>AndoridLogin</servlet-name>
+       <servlet-class>servlet.AndroidLogin</servlet-class>
+   </servlet>
+ 
+   
+   
+   <servlet-mapping>
+       <servlet-name>AndoridLogin</servlet-name>
+       <url-pattern>/AndroidLogin</url-pattern>
+   </servlet-mapping> 
   
-  
+   
+      <servlet>
+       <servlet-name>AndoridSearch</servlet-name>
+       <servlet-class>servlet.AndroidSearch</servlet-class>
+   </servlet>
+ 
+   
+   
+   <servlet-mapping>
+       <servlet-name>AndoridSearch</servlet-name>
+       <url-pattern>/AndroidSearch</url-pattern>
+   </servlet-mapping> 
   
   
   

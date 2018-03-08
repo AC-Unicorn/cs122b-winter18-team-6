@@ -127,7 +127,7 @@ function handleNormalSearch(id,query,cat) {
 	// TODO: you should do normal search here
 	var url = "";
 	if(cat=="movie")
-		url = "./Search?Search=" + escape(query);
+		url = "./SingleMovie?name=" + query;
 	else if(cat=="star")
 		url = "./SingleStar?name=" +escape(query);
 	window.location.href = url;
