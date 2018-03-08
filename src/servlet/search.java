@@ -193,7 +193,7 @@ public class search extends HttpServlet {
             String count_query = "Select count(distinct(movies.id)) from movies  where  "+new_input+";";
             //
             
-            System.out.println(query);
+            System.out.println(count_query);
             
             input = input + "&Year="+input_year+"&director="+input_director+"&star="+input_star;
             //this will be write in url 
@@ -211,6 +211,7 @@ public class search extends HttpServlet {
             	movie_nums = count.getInt(1);
             }
             movie_nums/=20;
+            movie_nums+=1;
             count.close();
             count_state.close();
             
