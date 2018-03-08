@@ -71,7 +71,7 @@ public class suggestion extends HttpServlet {
             String name = request.getParameter("query");
             
             
-            String query = String.format("select title from movies where match(title) against ('+%s*' in boolean mode);", name);
+            String query = String.format("select title from movies where match(title) against ('+%s*' in boolean mode) or edth(title,'%s',3)=1;", name,name);
             ResultSet rs = statement.executeQuery(query);
            
             JsonArray rsArray = new JsonArray();
@@ -93,7 +93,7 @@ public class suggestion extends HttpServlet {
             
             
             //search in stars
-            String query1 = String.format("select name from stars where match(name) against ('+%s*' in boolean mode);", name);
+            String query1 = String.format("select name from stars where match(name) against ('+%s*' in boolean mode) or edth(title,'%s',3)=1;", name,name);
             
             
             Statement statement2 = dbcon.createStatement();

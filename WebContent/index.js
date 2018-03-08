@@ -52,12 +52,12 @@ function handleLookupAjaxSuccess(data, query, doneCallback) {
 	{
 		
 		console.log(jsonData[i]['data']);
-		if(m_count<10&&jsonData[i]["category"]=="movie")
+		if(m_count<5&&jsonData[i]["category"]=="movie")
 		{	
 			limited_js_data.push(jsonData[i]);
 			m_count++;
 		}
-		else if(s_count<10&&jsonData[i]["category"]=="star")
+		else if(s_count<5&&jsonData[i]["category"]=="star")
 		{
 			limited_js_data.push(jsonData[i])
 			s_count++;
@@ -113,7 +113,8 @@ $('#autocomplete').autocomplete({
     // set delay time
     deferRequestBy: 300,
     groupBy: "category",
-    minChars:3
+    minChars:3,
+    //Cache is defualt set to true so there is cache
     // there are some other parameters that you might want to use to satisfy all the requirements
     // TODO: add other parameters, such as mininum characters
 });
