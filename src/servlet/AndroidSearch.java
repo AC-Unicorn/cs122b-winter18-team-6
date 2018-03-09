@@ -73,7 +73,7 @@ public class AndroidSearch extends HttpServlet {
             
             
             
-            String new_input = "match(title) against ('+";
+            String new_input = "match(title) against ('+*";
             
 
             
