@@ -8,6 +8,7 @@ function test(id)
 //test is used to handle browsing options
 var g1 = "g1";
 console.log(g1);
+var cc = new Object();
 
 function handleLookup(query, doneCallback) {
 	
@@ -68,6 +69,9 @@ function handleLookupAjaxSuccess(data, query, doneCallback) {
 			s_count++;
 		}
 	}
+	
+	cc[query] = limited_js_data;
+	console.log(cc);
 	
 	
 	// TODO: if you want to cache the result into a global variable you can do it here
