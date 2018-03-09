@@ -20,6 +20,18 @@ function handleLookup(query, doneCallback) {
 	
 	// TODO: if you want to check past query results first, you can do it here
 	
+	if(cc.hasOwnProperty(query))
+	{
+		
+		doneCallback( { suggestions: cc[query] } );
+		console.log("Data from Front End Cache");
+		for(var i=0;i<cc[query].length;i++)
+			console.log(cc[query][i]["value"]);
+		
+	}
+	else{
+		
+		console.log("Data from Ajax");
 	// sending the HTTP GET request to the Java Servlet endpoint hero-suggestion
 	// with the query data
 	jQuery.ajax({
@@ -36,6 +48,8 @@ function handleLookup(query, doneCallback) {
 			console.log(errorData)
 		}
 	})
+	
+	}
 }
 
 
@@ -57,15 +71,17 @@ function handleLookupAjaxSuccess(data, query, doneCallback) {
 	for(var i = 0;i<jsonData.length;i++) //limit 
 	{
 		
-		console.log(jsonData[i]['data']);
+		
 		if(m_count<5&&jsonData[i]["category"]=="movie")
 		{	
 			limited_js_data.push(jsonData[i]);
+			console.log(jsonData[i]['value']);
 			m_count++;
 		}
 		else if(s_count<5&&jsonData[i]["category"]=="star")
 		{
 			limited_js_data.push(jsonData[i])
+			console.log(jsonData[i]['value']);
 			s_count++;
 		}
 	}
