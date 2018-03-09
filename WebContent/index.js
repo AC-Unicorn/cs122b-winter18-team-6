@@ -6,11 +6,16 @@ function test(id)
 }
 
 //test is used to handle browsing options
+var g1 = "g1";
+console.log(g1);
 
-	  	    
 function handleLookup(query, doneCallback) {
-	console.log("autocomplete initiated")
-	console.log("sending AJAX request to backend Java Servlet")
+	
+	
+	console.log(g1);
+	
+	console.log("autocomplete initiated");
+	console.log("sending AJAX request to backend Java Servlet");
 	
 	// TODO: if you want to check past query results first, you can do it here
 	
@@ -64,6 +69,7 @@ function handleLookupAjaxSuccess(data, query, doneCallback) {
 		}
 	}
 	
+	
 	// TODO: if you want to cache the result into a global variable you can do it here
 
 	// call the callback function provided by the autocomplete library
@@ -103,7 +109,11 @@ $('#autocomplete').autocomplete({
 	// documentation of the lookup function can be found under the "Custom lookup function" section
     lookup: function (query, doneCallback) {
     		
+    		
+    	
     		handleLookup(query, doneCallback)
+    		
+    		
     },
     onSelect: function(suggestion) {
     		handleSelectSuggestion(suggestion)
