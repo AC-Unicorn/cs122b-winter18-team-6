@@ -211,7 +211,7 @@ public class search extends HttpServlet {
             	movie_nums = count.getInt(1);
             }
             movie_nums/=20;
-            movie_nums+=1;
+            movie_nums+=2;
             count.close();
             count_state.close();
             

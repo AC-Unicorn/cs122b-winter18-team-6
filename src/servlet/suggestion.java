@@ -90,10 +90,12 @@ public class suggestion extends HttpServlet {
             }
             
             
-            
+            int simi = name.length()/4;
+            System.out.println(simi);
+            simi = Math.max(simi, 1);
             
             //search in stars
-            String query1 = String.format("select name from stars where match(name) against ('+*%s*' in boolean mode) or edth(name,'%s',2)=1;", name,name);
+            String query1 = String.format("select name from stars where match(name) against ('+*%s*' in boolean mode) or edth(name,'%s',%d)=1;", name,name,simi);
             
             
             Statement statement2 = dbcon.createStatement();
