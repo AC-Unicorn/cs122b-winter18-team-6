@@ -71,6 +71,10 @@ public class AndroidSearch extends HttpServlet {
             
             //
             
+            int simi = input.length()/4;
+            System.out.println(simi);
+            simi = Math.max(simi, 1);
+            
             
             
             String new_input = "match(title) against ('+*";
@@ -79,7 +83,7 @@ public class AndroidSearch extends HttpServlet {
             
             new_input += input;
             
-            new_input += "*' in boolean mode) or edth(title,'"+input+"',2)=1";
+            new_input += "*' in boolean mode) or edth(LCASE(title),LCASE('"+input+"'),"+simi+")=1";
             System.out.println(new_input);
             
             String query = "Select distinct(movies.id),title,year,director from movies  where   "
