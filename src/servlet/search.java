@@ -1,20 +1,27 @@
 package servlet;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 /* A servlet to display the contents of the MySQL movieDB database */
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
 public class search extends HttpServlet {
     /**
@@ -34,7 +41,9 @@ public class search extends HttpServlet {
     // Use http GET
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String loginUser = "root";
+    	long startTime_total = System.nanoTime();
+    	
+    	String loginUser = "root";
         String loginPasswd = "0000";
         String loginUrl = "jdbc:mysql://localhost:3306/cs122b";
 
@@ -143,13 +152,44 @@ public class search extends HttpServlet {
         out.println("<div class=wrapper>");
         try {
             //Class.forName("org.gjt.mm.mysql.Driver");
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            //Class.forName("com.mysql.jdbc.Driver").newInstance();
             
-            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+        	long startTime = System.nanoTime();
+        	
+        	Context initCtx = new InitialContext();
+            if (initCtx == null)
+                System.out.println("initCtx is NULL");
+
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                System.out.println("envCtx is NULL");
+            
+            
+            
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/Fablix");
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+           
+            
+            
+            
+            Connection dbcon =ds.getConnection(); 
             
             // Declare our statement
       
-            Statement statement = dbcon.createStatement();
+            
             
            
             String colunmn = "title";
@@ -172,26 +212,35 @@ public class search extends HttpServlet {
             	 }
             }
             
-            
-            
+           
             //
             
             int simi = input.length()/4;
             System.out.println(simi);
             simi = Math.max(simi, 1);
             
-            String new_input = "match(title) against ('+*";
+            
+            
+            
+            String new_input = "match(title) against ('";
+            
+            String[] na = input.split(" ");
+            for (String s:na)
+            {
+            	
+            	new_input+="+" + s +"* ";
+            	
+            }
             
 
             
-            new_input += input;
+            new_input += "' in boolean mode) or edth(LCASE(title),LCASE('"+input+"'),"+simi+")=1";
+            System.out.println("new input: "+new_input);
             
-            new_input += "*' in boolean mode) or edth(LCASE(title),LCASE('"+input+"'),"+simi+")=1";
-            System.out.println(new_input);
-            
-            String query = "Select distinct(movies.id),title,year,director from movies  where  "
-            		+ new_input
-            				+ " order by "+colunmn+" "+ order_type+"  limit 20 offset "+offset+" ;";
+            String query = "Select distinct(movies.id),title,year,director from movies  where  "+new_input+ " order by "+colunmn+" "+ order_type+"  limit 20 offset "+offset+" ;";
+            System.out.println("query template: "+query);
+            PreparedStatement statement = dbcon.prepareStatement(query);
+
             String count_query = "Select count(distinct(movies.id)) from movies  where  "+new_input+";";
             //
             
@@ -202,13 +251,15 @@ public class search extends HttpServlet {
             
 
             // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+            
+            ResultSet rs = statement.executeQuery();
                
             //Count rows
             int  movie_nums = 0;
             
-            Statement count_state = dbcon.createStatement();
-            ResultSet count = count_state.executeQuery(count_query);
+            PreparedStatement count_state = dbcon.prepareStatement(count_query);
+            
+            ResultSet count = count_state.executeQuery();
             while(count.next()) {
             	movie_nums = count.getInt(1);
             }
@@ -225,7 +276,7 @@ public class search extends HttpServlet {
 
             // Iterate through each row of rs
             while (rs.next()) {
-                
+                System.out.println("There are movie results");
                 
                 String m_title = rs.getString(2);
                 String m_year = rs.getString(3);
@@ -233,10 +284,11 @@ public class search extends HttpServlet {
                 
                
                 
-                String query2 = "select * from movies,genres_in_movies,genres where movies.id='"+rs.getString(1) +"' and movies.id = movieId and genreId = genres.id;";
+                String query2 = "select * from movies,genres_in_movies,genres where movies.id=? and movies.id = movieId and genreId = genres.id;";
                 
-                Statement statement2 = dbcon.createStatement();
-                ResultSet rs2 = statement2.executeQuery(query2);
+                PreparedStatement statement2 = dbcon.prepareStatement(query2);
+                statement2.setString(1, rs.getString(1));
+                ResultSet rs2 = statement2.executeQuery();
                 String m_genres = "";
                 while(rs2.next())m_genres += rs2.getString(8)+",";
                 
@@ -244,11 +296,11 @@ public class search extends HttpServlet {
                 statement2.close();
                 
                 
-                String query3 = "select * from movies,stars_in_movies,stars where movies.id='"+rs.getString(1) +"' and movies.id = movieId and starId = stars.id;";
-                
+                String query3 = "select * from movies,stars_in_movies,stars where movies.id=? and movies.id = movieId and starId = stars.id;";
+                PreparedStatement statement3 = dbcon.prepareStatement(query3);
                 String m_stars = "";
-                Statement statement3 = dbcon.createStatement();
-                ResultSet rs3 = statement3.executeQuery(query3);
+                statement3.setString(1, rs.getString(1));
+                ResultSet rs3 = statement3.executeQuery();
                 while(rs3.next()) m_stars += "<a id ='"+rs3.getString(8)+"' onclick = foo(this.id)>"+rs3.getString(8) + "</a>,";
                 
                 rs3.close();
@@ -321,6 +373,28 @@ public class search extends HttpServlet {
             statement.close();
             
             dbcon.close();
+            
+            long endTime = System.nanoTime();
+            long elapsedTime = endTime - startTime; // elapsed time in nano seconds. Note: print the values in nano seconds 
+            long elapsedTime_total = endTime- startTime_total;
+            
+            System.out.println("TJ "+elapsedTime);
+            System.out.println("Ts "+elapsedTime_total);
+            
+            
+            File f = new File("log.txt");
+            PrintWriter writer = null;
+            if ( f.exists() && !f.isDirectory() ) {
+                writer = new PrintWriter(new FileOutputStream(new File("log.txt"), true));
+            }
+            else {
+                writer = new PrintWriter("log.txt");
+            }
+            writer.println("TJ "+elapsedTime+"\n");
+            writer.println("TS "+elapsedTime_total+"\n");
+           
+            writer.close();
+            
             
             
         } catch (SQLException ex) {

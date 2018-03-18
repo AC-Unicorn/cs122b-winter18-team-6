@@ -11,13 +11,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.google.gson.JsonObject;
+import java.sql.PreparedStatement;
 import com.google.gson.JsonArray;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
 public class AndroidSearch extends HttpServlet {
     /**
@@ -54,13 +58,29 @@ public class AndroidSearch extends HttpServlet {
         
         try {
             //Class.forName("org.gjt.mm.mysql.Driver");
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            //Class.forName("com.mysql.jdbc.Driver").newInstance();
             
-            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+            //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
             
             // Declare our statement
-      
-            Statement statement = dbcon.createStatement();
+        	Context initCtx = new InitialContext();
+            if (initCtx == null)
+                System.out.println("initCtx is NULL");
+
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                System.out.println("envCtx is NULL");
+            
+            
+            
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/Fablix");
+        	
+        	
+        	
+            Connection dbcon =ds.getConnection(); 
+        	
+            
             
            
             String colunmn = "title";
@@ -81,9 +101,15 @@ public class AndroidSearch extends HttpServlet {
             
 
             
-            new_input += input;
+            String[] na = input.split("%");
+            for (String s:na)
+            {
+            	
+            	new_input+= "+"+s +"* ";
+            	
+            }
             
-            new_input += "*' in boolean mode) or edth(LCASE(title),LCASE('"+input+"'),"+simi+")=1";
+            new_input += "' in boolean mode) or edth(LCASE(title),LCASE('"+input+"'),"+simi+")=1";
             System.out.println(new_input);
             
             String query = "Select distinct(movies.id),title,year,director from movies  where   "
@@ -95,9 +121,9 @@ public class AndroidSearch extends HttpServlet {
             
             //this will be write in url 
             
-
+            PreparedStatement statement = dbcon.prepareStatement(query);
             // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = statement.executeQuery();
                
            
             
@@ -121,8 +147,8 @@ public class AndroidSearch extends HttpServlet {
                 
                 String query2 = "select * from movies,genres_in_movies,genres where movies.id='"+rs.getString(1) +"' and movies.id = movieId and genreId = genres.id;";
                 
-                Statement statement2 = dbcon.createStatement();
-                ResultSet rs2 = statement2.executeQuery(query2);
+                PreparedStatement statement2 = dbcon.prepareStatement(query2);
+                ResultSet rs2 = statement2.executeQuery();
                 String m_genres = "";
                 while(rs2.next())m_genres += rs2.getString(8)+",";
                 
@@ -133,8 +159,8 @@ public class AndroidSearch extends HttpServlet {
                 String query3 = "select * from movies,stars_in_movies,stars where movies.id='"+rs.getString(1) +"' and movies.id = movieId and starId = stars.id;";
                 
                 String m_stars = "";
-                Statement statement3 = dbcon.createStatement();
-                ResultSet rs3 = statement3.executeQuery(query3);
+                PreparedStatement statement3 = dbcon.prepareStatement(query3);
+                ResultSet rs3 = statement3.executeQuery();
                 while(rs3.next()) m_stars += rs3.getString(8) + ",";
                 
                 rs3.close();

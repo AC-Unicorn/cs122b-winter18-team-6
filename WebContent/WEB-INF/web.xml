@@ -13,6 +13,51 @@
    </user-data-constraint>
  </security-constraint> 
  -->
+ 
+  <resource-ref>
+    <description>
+			Resource reference to a factory for java.sql.Connection
+			instances that may be used for talking to a particular
+			database that
+			is configured in the server.xml file.
+		</description>
+    <res-ref-name>
+			jdbc/Fablix
+		</res-ref-name>
+    <res-type>
+			javax.sql.DataSource
+		</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref> 
+ 
+ 
+   <resource-ref>
+    <description>
+			Resource reference to a factory for java.sql.Connection
+			instances that may be used for talking to a particular
+			database that
+			is configured in the server.xml file.
+		</description>
+    <res-ref-name>
+			jdbc/Fablix_write
+		</res-ref-name>
+    <res-type>
+			javax.sql.DataSource
+		</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref> 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
   
    <servlet>
        <servlet-name>movieServlet</servlet-name>
@@ -37,6 +82,8 @@
        <servlet-name>loginServlet</servlet-name>
        <url-pattern>/form</url-pattern>
    </servlet-mapping>  
+   
+
    
    
     
