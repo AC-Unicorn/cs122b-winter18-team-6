@@ -17,6 +17,8 @@ import java.net.*;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.net.ssl.HttpsURLConnection;
  
 
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
 public class login extends HttpServlet {
     /**
@@ -59,8 +62,16 @@ public class login extends HttpServlet {
         try {
             //Class.forName("org.gjt.mm.mysql.Driver");
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            
-            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+        	Context initCtx = new InitialContext();
+            if (initCtx == null)
+                System.out.println("initCtx is NULL");
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                System.out.println("envCtx is NULL");
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/Fablix");
+            Connection dbcon =ds.getConnection();
+            //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
             
             // Declare our statement
       

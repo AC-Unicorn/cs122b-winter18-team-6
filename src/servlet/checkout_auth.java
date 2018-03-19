@@ -10,12 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -56,7 +59,16 @@ public class checkout_auth extends HttpServlet {
             //Class.forName("org.gjt.mm.mysql.Driver");
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             
-            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+        	Context initCtx = new InitialContext();
+            if (initCtx == null)
+                System.out.println("initCtx is NULL");
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                System.out.println("envCtx is NULL");
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/Fablix_write");
+            Connection dbcon =ds.getConnection();
+            //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
             
             // Declare our statement
       
@@ -116,12 +128,12 @@ public class checkout_auth extends HttpServlet {
             		      System.out.println(dt.getMonth()+1);
             		      System.out.println(dt.getDate());
             		      
-            		      String ds = dt.getYear()+1900 +"/" + (dt.getMonth() +1) +"/" +dt.getDate();
+            		      String dts = dt.getYear()+1900 +"/" + (dt.getMonth() +1) +"/" +dt.getDate();
             		      
             		      int ccId = (int) session.getAttribute("user_id");
             		      System.out.println(id);
             		      if(id!=null&&id!="") {
-            		      String update = "INSERT INTO sales VALUES(0,"+ccId+",'"+id+"', '"+ds+"');";
+            		      String update = "INSERT INTO sales VALUES(0,"+ccId+",'"+id+"', '"+dts+"');";
             		      Statement s2 = dbcon.createStatement();
             		      int n = s2.executeUpdate(update);
             		      

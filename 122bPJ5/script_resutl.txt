@@ -1,0 +1,40 @@
+Scale 10th nopre
+Avg ts 48343770
+Avg tj 48307521
+
+Single 10th nopre
+Avg ts 197392160
+Avg tj 197364958
+
+Scale 10th nopool
+Avg ts 51855061
+Avg tj 51798002
+
+Single 10th nopool
+Avg ts 197317984
+Avg tj 197277466
+
+
+Scale 10th all
+Avg ts 45906796
+Avg tj 45873730
+
+Single 10th all
+Avg ts 196047601
+Avg tj 196020590
+
+Scale 1th all
+Avg ts 32324639
+Avg tj 32274617
+
+Single 1th all
+Avg ts 32190477
+Avg tj 32143719
+
+Single 10th https
+Avg ts 171824731
+Avg tj 171795114
+
+
+
+

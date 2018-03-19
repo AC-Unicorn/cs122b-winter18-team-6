@@ -82,7 +82,7 @@
 	%>
     <h1>Mizushima's Open Art Gallery</h1>
     <div id="login_div">
-    <form id="login" method="POST" action="./form">
+    <form id="login" method="POST" action="../Fablix/form">
         <p>Username<br></p>
  	<input type="text" name="Username">
         <p><br>Password<br></p>        

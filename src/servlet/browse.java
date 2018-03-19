@@ -12,11 +12,14 @@ import java.sql.Statement;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 public class browse extends HttpServlet {
     /**
@@ -138,7 +141,16 @@ public class browse extends HttpServlet {
             	 
             }
             else {
-                Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+            	Context initCtx = new InitialContext();
+                if (initCtx == null)
+                    System.out.println("initCtx is NULL");
+                Context envCtx = (Context) initCtx.lookup("java:comp/env");
+                if (envCtx == null)
+                    System.out.println("envCtx is NULL");
+                // Look up our data source
+                DataSource ds = (DataSource) envCtx.lookup("jdbc/Fablix");
+                Connection dbcon =ds.getConnection();
+                //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
                 
                 // Declare our statement
           

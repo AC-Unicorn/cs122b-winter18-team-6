@@ -171,22 +171,11 @@ public class search extends HttpServlet {
             
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-           
-            
+   
             
             
             Connection dbcon =ds.getConnection(); 
-            
+            //Connection dbcon =  DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
             // Declare our statement
       
             
@@ -240,7 +229,7 @@ public class search extends HttpServlet {
             String query = "Select distinct(movies.id),title,year,director from movies  where  "+new_input+ " order by "+colunmn+" "+ order_type+"  limit 20 offset "+offset+" ;";
             System.out.println("query template: "+query);
             PreparedStatement statement = dbcon.prepareStatement(query);
-
+            //Statement statement = dbcon.createStatement();
             String count_query = "Select count(distinct(movies.id)) from movies  where  "+new_input+";";
             //
             
@@ -258,6 +247,8 @@ public class search extends HttpServlet {
             int  movie_nums = 0;
             
             PreparedStatement count_state = dbcon.prepareStatement(count_query);
+            //Statement count_state = dbcon.createStatement();
+            
             
             ResultSet count = count_state.executeQuery();
             while(count.next()) {
@@ -284,10 +275,12 @@ public class search extends HttpServlet {
                 
                
                 
-                String query2 = "select * from movies,genres_in_movies,genres where movies.id=? and movies.id = movieId and genreId = genres.id;";
+                String query2 = "select * from movies,genres_in_movies,genres where movies.id='"+rs.getString(1)+"' and movies.id = movieId and genreId = genres.id;";
                 
                 PreparedStatement statement2 = dbcon.prepareStatement(query2);
-                statement2.setString(1, rs.getString(1));
+                //Statement statement2 = dbcon.createStatement();
+                
+                
                 ResultSet rs2 = statement2.executeQuery();
                 String m_genres = "";
                 while(rs2.next())m_genres += rs2.getString(8)+",";
@@ -296,10 +289,12 @@ public class search extends HttpServlet {
                 statement2.close();
                 
                 
-                String query3 = "select * from movies,stars_in_movies,stars where movies.id=? and movies.id = movieId and starId = stars.id;";
+                String query3 = "select * from movies,stars_in_movies,stars where movies.id='"+rs.getString(1)+"' and movies.id = movieId and starId = stars.id;";
                 PreparedStatement statement3 = dbcon.prepareStatement(query3);
+                //Statement statement3 = dbcon.createStatement();
+                
                 String m_stars = "";
-                statement3.setString(1, rs.getString(1));
+                
                 ResultSet rs3 = statement3.executeQuery();
                 while(rs3.next()) m_stars += "<a id ='"+rs3.getString(8)+"' onclick = foo(this.id)>"+rs3.getString(8) + "</a>,";
                 
